@@ -45,25 +45,30 @@ export function Lobby({
   return (
     <main className="lobby">
       <div className="lobby-glow" aria-hidden="true" />
+      <div className="lobby-glow lobby-glow-alt" aria-hidden="true" />
       <div className="lobby-grid" aria-hidden="true" />
 
-      <section className="lobby-panel">
-        <p className="brand">Web Connect</p>
-        <h1 className="lobby-headline">Talk with your group, instantly.</h1>
+      <section className="lobby-panel lobby-enter">
+        <p className="brand">Web Connect Live</p>
+        <h1 className="lobby-headline">Jump into a room. Chat or talk.</h1>
         <p className="lobby-sub">
-          Create a room code, share it, and chat or hop on voice — up to 8 people.
+          Share a room code with your group, or join a random room and wait for someone else
+          looking too — up to 8 people.
         </p>
 
         {waiting ? (
           <div className="waiting-panel" role="status" aria-live="polite">
-            <div className="waiting-spinner" aria-hidden="true" />
-            <p className="waiting-title">Looking for a random room…</p>
+            <div className="waiting-pulse" aria-hidden="true">
+              <div className="waiting-spinner" />
+            </div>
+            <p className="waiting-title">Waiting for another person…</p>
+            <p className="waiting-status">Searching random rooms</p>
             <p className="waiting-copy">
-              No one else is waiting right now. Hang tight until another person also joins
-              randomly.
+              No open random room yet. Stay here until someone else also taps Join random room —
+              you’ll be matched automatically.
             </p>
-            <button className="btn ghost" type="button" onClick={onCancelWaiting}>
-              Cancel
+            <button className="btn ghost btn-block" type="button" onClick={onCancelWaiting}>
+              Cancel wait
             </button>
           </div>
         ) : (
@@ -117,16 +122,20 @@ export function Lobby({
 
             {error ? <p className="form-error">{error}</p> : null}
 
-            <button className="btn primary" type="submit" disabled={busy || !name.trim()}>
+            <button
+              className="btn primary btn-block"
+              type="submit"
+              disabled={busy || !name.trim()}
+            >
               {busy ? "Joining…" : "Join room"}
             </button>
 
             <div className="lobby-divider" role="separator">
-              <span>or</span>
+              <span>or find people</span>
             </div>
 
             <button
-              className="btn secondary"
+              className="btn secondary btn-block"
               type="button"
               disabled={busy || !name.trim()}
               onClick={() => void handleRandom()}

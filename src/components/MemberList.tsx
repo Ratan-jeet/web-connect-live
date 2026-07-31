@@ -8,7 +8,7 @@ type MemberListProps = {
 export function MemberList({ members, selfId }: MemberListProps) {
   return (
     <aside className="members">
-      <h2>In room</h2>
+      <h2>In room · {members.length}</h2>
       <ul>
         {members.map((member) => (
           <li key={member.id} className={member.id === selfId ? "self" : undefined}>
@@ -16,7 +16,13 @@ export function MemberList({ members, selfId }: MemberListProps) {
               {member.name}
               {member.id === selfId ? " (you)" : ""}
             </span>
-            <span className={`voice-dot ${member.inVoice ? "on" : ""}`} title={member.inVoice ? "In voice" : "Not in voice"} />
+            <span className={`voice-status ${member.inVoice ? "on" : ""}`}>
+              <span
+                className={`voice-dot ${member.inVoice ? "on" : ""}`}
+                aria-hidden="true"
+              />
+              {member.inVoice ? "In voice" : "Chat only"}
+            </span>
           </li>
         ))}
       </ul>

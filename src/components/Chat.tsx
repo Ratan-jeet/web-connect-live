@@ -28,7 +28,10 @@ export function Chat({ messages, selfId, onSend }: ChatProps) {
     <section className="chat">
       <div className="chat-log">
         {messages.length === 0 ? (
-          <p className="chat-empty">No messages yet. Say hello.</p>
+          <div className="chat-empty">
+            <p className="chat-empty-title">Room is quiet</p>
+            <p>Send a message to get the conversation going — or join voice above.</p>
+          </div>
         ) : (
           messages.map((message) => (
             <article

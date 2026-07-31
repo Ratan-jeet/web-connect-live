@@ -119,15 +119,21 @@ export function Room({ session, initialMembers, onLeave }: RoomProps) {
     }
   }
 
+  const voiceInCount = members.filter((m) => m.inVoice).length;
+
   return (
-    <main className="room">
+    <main className="room room-enter">
       <header className="room-header">
         <div>
-          <p className="brand compact">Web Connect</p>
+          <p className="brand compact">Web Connect Live</p>
           <h1>
             Room <span>{session.roomCode}</span>
             {session.isRandom ? <em className="room-tag">Random</em> : null}
           </h1>
+          <p className="room-meta">
+            {members.length} {members.length === 1 ? "person" : "people"}
+            {voiceInCount > 0 ? ` · ${voiceInCount} in voice` : ""}
+          </p>
         </div>
         <button className="btn ghost" type="button" onClick={copyCode}>
           {copied ? "Copied" : "Copy code"}
@@ -135,7 +141,7 @@ export function Room({ session, initialMembers, onLeave }: RoomProps) {
       </header>
 
       {session.isRandom && members.length < 2 ? (
-        <p className="waiting-banner" role="status">
+        <p className="waiting-banner waiting-banner-strong" role="status">
           Waiting for another person to join randomly…
         </p>
       ) : null}
