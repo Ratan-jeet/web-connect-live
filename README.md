@@ -1,4 +1,4 @@
-# Web Connect (Render)
+# Web Connect Live
 
 Small-group chat and voice calls in the browser. This copy is set up for **Render** deployment.
 
@@ -16,7 +16,7 @@ npm run dev
 
 ## Deploy on Render
 
-1. Push this folder to a **new** GitHub repo (not the original `web-connect` repo).
+1. Push this folder to a **new** GitHub repo named `web-connect-live`.
 2. In [Render](https://render.com) → **New** → **Web Service** → connect that repo.
 3. Settings:
    - **Runtime:** Node
