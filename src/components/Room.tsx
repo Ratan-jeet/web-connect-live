@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Chat } from "./Chat";
+import { ConfirmDialog } from "./ConfirmDialog";
 import { MemberList } from "./MemberList";
 import { VoiceControls } from "./VoiceControls";
 import { getSocket } from "../lib/socket";
@@ -20,6 +21,7 @@ export function Room({ session, initialMembers, onLeave }: RoomProps) {
   const [voiceBusy, setVoiceBusy] = useState(false);
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
 
   const meshRef = useRef<VoiceMesh | null>(null);
   const inVoiceRef = useRef(false);
@@ -125,7 +127,13 @@ export function Room({ session, initialMembers, onLeave }: RoomProps) {
     <main className="room room-enter">
       <header className="room-header">
         <div>
-          <p className="brand compact">Web Connect Live</p>
+          <button
+            className="brand compact brand-button"
+            type="button"
+            onClick={() => setConfirmLeave(true)}
+          >
+            Web Connect Live
+          </button>
           <h1>
             Room <span>{session.roomCode}</span>
             {session.isRandom ? <em className="room-tag">Random</em> : null}
@@ -161,6 +169,19 @@ export function Room({ session, initialMembers, onLeave }: RoomProps) {
         onLeaveVoice={leaveVoice}
         onToggleMute={toggleMute}
         onLeaveRoom={leaveRoom}
+      />
+
+      <ConfirmDialog
+        open={confirmLeave}
+        title="Leave this room?"
+        message="You’ll leave chat and voice for this room and return to the home page."
+        confirmLabel="Leave room"
+        cancelLabel="Stay"
+        onCancel={() => setConfirmLeave(false)}
+        onConfirm={() => {
+          setConfirmLeave(false);
+          leaveRoom();
+        }}
       />
     </main>
   );

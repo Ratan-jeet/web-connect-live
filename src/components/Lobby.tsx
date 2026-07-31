@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 type LobbyProps = {
   onJoin: (name: string, roomCode: string) => Promise<void>;
@@ -27,6 +28,15 @@ export function Lobby({
   waiting,
 }: LobbyProps) {
   const [name, setName] = useState("");
+  const [confirmHome, setConfirmHome] = useState(false);
+
+  function handleBrandClick() {
+    if (waiting) {
+      setConfirmHome(true);
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,11 +59,12 @@ export function Lobby({
       <div className="lobby-grid" aria-hidden="true" />
 
       <section className="lobby-panel lobby-enter">
-        <p className="brand">Web Connect Live</p>
+        <button className="brand brand-button" type="button" onClick={handleBrandClick}>
+          Web Connect Live
+        </button>
         <h1 className="lobby-headline">Jump into a room. Chat or talk.</h1>
         <p className="lobby-sub">
-          Share a room code with your group, or join a random room and wait for someone else
-          looking too — up to 8 people.
+          Join with a room code, or match into a random room — up to 8 people.
         </p>
 
         {waiting ? (
@@ -145,6 +156,19 @@ export function Lobby({
           </form>
         )}
       </section>
+
+      <ConfirmDialog
+        open={confirmHome}
+        title="Leave random queue?"
+        message="You’re waiting for a random match. Leave the queue and go back to the home page?"
+        confirmLabel="Leave queue"
+        cancelLabel="Keep waiting"
+        onCancel={() => setConfirmHome(false)}
+        onConfirm={() => {
+          setConfirmHome(false);
+          onCancelWaiting();
+        }}
+      />
     </main>
   );
 }
